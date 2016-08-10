@@ -1,0 +1,50 @@
+##### CalorieCount #####
+A Toptal test project by Lara Tais
+
+
+## Stack ##
+django
+ajax_auth
+django-rest-framework
+jquery
+
+
+## Run ##
+sudo ./deploy.sh
+will activate the virtual env, install the requirements, load test users to db, collect static files and fire the django dev server
+
+
+## Access ##
+http://127.0.0.1:8000/
+
+
+## Users ##
+usernames: 'admin', 'manager', 'common_user'
+all passwords are 'toptal123'
+
+
+## Most important manually generated files ##
+caloriecount/
+.....api/
+.......models.py
+.......serializers.py
+.......views.py
+.......tests/
+...........test_authentication_authorization.py
+...........test_calorie_intake_crud.py
+...........test_user_crud.py
+.....frontend/
+.......static/
+...........js/
+.............caloriecount.js
+.......templates/
+.............index.html
+
+
+## Error handling ##
+Logged to console at this point.
+
+
+thank you!
+
+

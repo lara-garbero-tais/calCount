@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <script src="{% static 'static_jquery/js/jquery.js' %}" type="text/javascript"></script>
+    <script src="{% static "js/caloriecount.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/csrf.js" %}" type="text/javascript"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css"/>
+    <script src="https://use.fontawesome.com/ed934eef61.js"></script>
+    <link rel="stylesheet" href="{% static 'css/master.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div id="content">
+
+        <!-- header -->
+        <div id="text-navbar" class="pure-g float-right hidden">
+            <div class="pure-u width-100">
+                <a id="user-panel-toggler" class="box-toggler-text hidden">[user panel]</a> 
+                <a id="admin-panel-toggler" class="box-toggler-text hidden">[admin panel]</a> 
+                <a id="log-out-toggler" class="box-toggler-text">[log out]</a></div>
+        </div>
+        <div class="pure-g margin-top-medium display-block">
+            <div id="title" class="pure-u width-100"><h1><a class="light-green">calorie</a>count</h1></div>
+        </div>
+
+        <!-- login -->
+        <div id="signin-box" class="pure-g dark-box auth-box hidden">
+            <div class="pure-u margin-auto">
+                <form class="pure-form" id="form-signin">
+                    <fieldset>
+                    <input name="username" type="text" class="form-control" placeholder="email" autofocus>
+                    <input name="password" type="password" class="form-control" placeholder="password">
+                    <button class="pure-button pure-button-primary margin-left-small">
+                                <b>log in</b>
+                    </button>
+                    </fieldset>
+                </form>
+                <a id="login-result" class="error-description hidden"></a>
+            </div>
+        </div>
+        <div id="signin-box-toggler" class="pure-g box-toggler box-toggler-text hidden">
+                <div class="pure-u width-100 float-right"><a>[register]</a></div>
+        </div>
+
+        <!-- register -->
+        <div id="register-box" class="pure-g dark-box auth-box hidden">
+            <div class="pure-u margin-auto">
+                <form class="pure-form" id="form-register">
+                <fieldset>
+                    <input name="username" type="text" class="form-control" placeholder="username" autofocus >
+                    <input name="password" type="password" class="form-control" placeholder="password">
+                    <input name="password_confirm" type="password" class="form-control" placeholder="repeat password">
+                    <button class="pure-button pure-button-primary margin-left-small">
+                                <b>register</b>
+                    </button>
+                    </fieldset>
+                </form>
+                <a id="register-result" class="error-description hidden"></a>
+            </div>
+        </div>
+        <div id="register-box-toggler" class="pure-g box-toggler box-toggler-text hidden">
+                <div class="pure-u width-100 float-right"><a>[log in]</a></div>
+        </div>
+
+        <!-- user panel wrapper-->
+        <div id="user-panel-wrapper" class="hidden">
+            <!-- goal intake -->
+            <div id="daily-goal" class="pure-g pure-form margin-top-medium over-limit">
+                <div id="daily-goal-u" class="pure-u width-100">
+                    <a>your daily goal is <a id="inline-daily-goal"></a> calories.
+                    <button id="update-daily-goal" class="pure-button pure-button-primary pure-button-filter margin-left-small hidden">update</button>
+                    <span id="calorie-record">you have consumed <a id="inline-total"></a> calories today.</a><span>
+                </div>
+            </div>
+            <div id="edit-daily-goal" class="pure-g box-toggler-text">
+                <div class="pure-u width-100 float-right"><a>[edit daily goal]</a></div>
+            </div>
+                
+            <!-- create intake -->
+            <div id="new-intake" class="pure-g dark-box">
+                <div class="pure-u margin-auto">
+                    <form class="pure-form" id="form-new-intake">
+                        <fieldset>
+                            <input name="date" type="text" class="medium-text-input datetimepicker" id="datetimepicker" placeholder="date and time">
+                            <input name="calories" type="text" class="small-text-input" placeholder="calories">
+                            <input name="description" type="text" class="large-text-input" placeholder="description">
+                            <button id="new-intake-submit" class="pure-button pure-button-primary margin-left-small">
+                                <b>+</b>
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <div id="filters">
+
+                 <!-- filters -->
+                <div class="pure-g">
+                    <div class="pure-u width-100">
+                            <div class="margin-auto">
+                                <form class="pure-form" id="filter-form">
+                                    <fieldset>
+                                        <input id="datepicker-start" type="text" class="medium-text-input" placeholder="start date">
+                                        <input id="datepicker-end" type="text" class="medium-text-input" placeholder="end date">
+                                        <input id="timepicker-start" type="text" class="timepicker small-text-input" placeholder="start time">
+                                        <input id="timepicker-end" type="text" class="timepicker small-text-input" placeholder="end time">
+                                        <button id="set-filter" class="pure-button pure-button-primary pure-button-filter margin-left-small">filter</button>
+                                        <button id="reset-filter" class="pure-button pure-button-primary pure-button-filter margin-left-small">reset</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+                <div class="pure-g width-100 table-body">
+                    <div class="pure-u-1-4"><h4 class="padding-left-medium">date</h4></div>
+                    <div class="pure-u-1-8"><h4 class="padding-left-small">calories</h4></div>
+                    <div class="pure-u-1-2"><h4 class="padding-left-small">description</h4></div>
+                </div>
+                <div id="calorie-intake-list">
+                    <!-- log rows are appended here -->
+                </div>
+            </div>
+        </div>
+        <!-- end user panel wrapper -->
+
+        <!-- admin panel wrapper-->
+        <div id="admin-panel-wrapper" class="hidden">
+                
+            <!-- create user -->
+            <div id="new-user" class="pure-g dark-box">
+                <div class="pure-u margin-auto">
+                    <form class="pure-form" id="form-new-user">
+                        <fieldset>
+                            <input name="username" type="text" class="medium-small-text-input" placeholder="username">
+                            <input name="email" type="text" class="medium-small-text-input" placeholder="email">
+                            <input name="password" type="password" class="medium-small-text-input" placeholder="password">
+                            <input name="password_confirm" type="password" class="medium-small-text-input" placeholder="password">
+                            <button id="new-user-submit" class="pure-button pure-button-primary margin-left-small">
+                                new user
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <div id="user-admin-box">
+
+                 <!-- user administration -->
+                <div class="pure-g width-100 table-body">
+                    <div class="pure-u-1-4"><h4 class="padding-left-medium">user</h4></div>
+                    <div class="pure-u-1-4"><h4 class="padding-left-medium">email</h4></div>
+                    <div class="pure-u-1-8"><h4 class="padding-left-medium">manager</h4></div>
+                    <div class="pure-u-1-4"><h4 class="padding-left-medium">daily calories</h4></div>
+                </div>
+                <div id="user-list">
+                    <!-- log rows are appended here -->
+                </div>
+            </div>
+        </div>
+        <!-- end user panel wrapper -->
+
+        <div id="byline" class="pure-g">
+            <div class="pure-u width-100"><h4>a toptal test project by lara tais</h4></div>
+        </div>
+
+    </div>
+
+</body>
+
+<script type="html/tpl" id="calorie-intake-row">
+    <div class="calorie-intake-group">
+        <div id="calorie-intake-{id}" class="calorie-intake pure-g width-100 table-body">
+            <div class="pure-u-1-4"><p id="intake-date-{id}" class="intake-date padding-left-medium">{date}</p></div>
+            <div class="pure-u-1-8"><p id="intake-calories-{id}" class="padding-left-small"><b>{calories}</b></p></div>
+            <div class="pure-u-1-2"><p id="intake-description-{id}" class="padding-left-small">{description}</p></div>
+            <div class="pure-u-1-8 padding-top-small">
+                <i class="fa fa-pencil-square-o padding-left-medium edit-intake" aria-hidden="true"></i>
+                <i class="fa fa-times padding-left-small delete-intake" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div id="edit-calorie-intake-{id}" class="calorie-intake-edit pure-g table-body hidden">
+            <form class="pure-form width-100 form-edit-intake" id="form-edit-intake-{id}">
+                <fieldset>
+                    <div class="pure-u">
+                        <input name="date" id="intake-date-field-{id}" type="text" class="medium-text-input datetimepicker" placeholder="date">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input name="calories" id="intake-calories-field-{id}" type="text" class="small-text-input" placeholder="calories">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input name="description" id="intake-description-field-{id}" type="text" class="medium-large-text-input" placeholder="description">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <button id="save-intake-{id}" class="save-intake pure-button pure-button-filter pure-button-primary">
+                            save
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script type="html/tpl" id="user-row">
+    <div id="user-group-{id}">
+        <div id="user-{id}" class="user pure-g width-100 table-body">
+            <div class="pure-u-1-4"><p id="user-name-{id}" class="padding-left-medium">{name}</p></div>
+            <div class="pure-u-1-4"><p id="user-email-{id}" class="padding-left-medium">{email}</p></div>
+            <div class="pure-u-1-8"><p id="user-is-manager-{id}" class="padding-left-medium">{is-manager}</p></div>
+            <div class="pure-u-1-4"><p id="user-calories-{id}" class="padding-left-medium">{calories}</p></div>
+            <div class="pure-u-1-8 padding-top-medium-small align-left">
+                <i class="fa fa-pencil-square-o edit-user" aria-hidden="true"></i>
+                <i class="fa fa-times padding-left-small delete-user" aria-hidden="true"></i>
+                <a id="collapse-controls-{id}"><i class="fa fa-chevron-right padding-left-small display-intakes" aria-hidden="true"></i>
+                <i class="fa fa-chevron-down padding-left-small display-intakes chevron-hidden" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div id="edit-user-{id}" class="user-edit pure-g table-body hidden">
+            <form class="pure-form width-100 form-edit-user" id="form-edit-user-{id}">
+                <fieldset>
+
+                    <div class="pure-u padding-left-small">
+                        <input name="username" id="user-name-field-{id}" type="text" class="medium-small-text-input" placeholder="username">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input name="email" id="user-email-field-{id}" type="text" class="medium-small-text-input"  placeholder="email">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input id="user-is-manager-field-{id}" type="checkbox" name="is_manager"> is manager
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input name="calories" id="user-calories-field-{id}" type="text" class="medium-small-text-input"  placeholder="calorie goal">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <button id="save-user-{id}" class="save-user pure-button pure-button-filter pure-button-primary">
+                            save
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="new-calorie-intake-{id}" class="calorie-intake-create pure-g table-body hidden">
+            <form class="pure-form width-100 form-new-intake" id="form-new-intake-{id}">
+                <fieldset>
+                    <div class="pure-u">
+                        <input name="date" id="intake-date-field-{id}" type="text" class="medium-text-input datetimepicker" placeholder="date">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input name="calories" id="intake-calories-field-{id}" type="text" class="small-text-input" placeholder="calories">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <input name="description" id="intake-description-field-{id}" type="text" class="medium-large-text-input" placeholder="description">
+                    </div>
+                    <div class="pure-u padding-left-small">
+                        <button id="new-intake-{id}" class="new-user-intake pure-button pure-button-filter pure-button-primary">
+                            add
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="user-{id}-intakes" class="hidden nested-intake">
+        </div>
+    </div>
+</script>
+
+<script src="{% static 'js/jquery.datetimepicker.full.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/jquery.datetimepicker.css' %}">
