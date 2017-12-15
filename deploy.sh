@@ -1,10 +1,10 @@
 #!/bin/bash
-# CalorieCount deployment script
+# calCount deployment script
 
 source env/bin/activate
 pip install -r requirements.txt
 
-cd caloriecount
+cd calcount
 
 python manage.py makemigrations
 python manage.py migrate

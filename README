@@ -1,6 +1,4 @@
-##### CalorieCount #####
-A Toptal test project by Lara Tais
-
+##### CalCount #####
 
 ## Stack ##
 django
@@ -20,11 +18,11 @@ http://127.0.0.1:8000/
 
 ## Users ##
 usernames: 'admin', 'manager', 'common_user'
-all passwords are 'toptal123'
+all passwords are 'xxx123'
 
 
 ## Most important manually generated files ##
-caloriecount/
+calcount/
 .....api/
 .......models.py
 .......serializers.py
@@ -44,7 +42,5 @@ caloriecount/
 ## Error handling ##
 Logged to console at this point.
 
-
-thank you!
 
 
